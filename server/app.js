@@ -1,6 +1,7 @@
 const express = require('express');
 
 const path = require('path');
+
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
@@ -11,10 +12,12 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname,'public')));
 
+app.get('/first1', (req, res) => {
+    res.status(400).send('hello ajax!')
+});
 app.get('/first', (req, res) => {
     res.send('hello ajax!')
 });
-
 app.get('/responseData', (req, res) => {
     res.send({"name":"llf"})
 });
