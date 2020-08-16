@@ -1,0 +1,35 @@
+<!-- 模板引擎 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- 1.将模板引擎的库文件引入到当前页面 全局安装(npm install atr-template ) -->
+    <script src="/server/node_modules/art-template/lib/template-web.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+    <!-- 2.准备art-template 模板 -->
+    <script id="tpl" type="text/html">
+        
+        <!-- 通过模板语法告诉模板引擎，数据和html字符串要如何拼接 --> 
+            <h1>{{ username }} {{age}}</h1>
+
+    </script>
+    <script type="text/javascript">
+        /*
+        *3.告诉模板引擎将哪一个模板和哪一个数据进行拼接
+        *template（）：第一个参数：模板id    第二个参数：数据 对象类型
+        *方法的返回值就是拼接好的html字符串
+        */
+        var html = template('tpl', {username: 'zhangshan', age: '20'});
+         console.log(html);
+        /*
+        *将拼接好的html字符串添加到页面中
+        */
+       document.getElementById('container').innerHTML = html;
+
+    </script>
+    
+</body>
+</html>
