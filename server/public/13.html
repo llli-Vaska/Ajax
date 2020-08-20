@@ -1,0 +1,80 @@
+<!-- 搜索框内容自动提示 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .container {
+            padding-top: 150px;
+        }
+        .list-group {
+            display: none;
+        }
+    </style>
+   
+</head>
+<body>
+    <div class="container">
+        <div class="from-group">
+            <input type="text" class="from-control" placeholder="请输入搜索关键字" id="search">
+            <ul class="list-group" id="list-box">
+                <li class="list-group-item">提示文字显示的地方</li>
+            </ul>
+        </div>
+    </div>
+    <script src="js/ajax.js"></script>
+    <script src="/server/node_modules/art-template/lib/template-web.js"></script>
+    <script type="text/html" id="tpl">
+        {{each result}}
+
+        <li class="list-group-item">{{$value}}</li>
+        {{/each}}
+    </script>
+    <script>
+        //获取搜索框
+        var searchInp = document.getElementById('search');
+        //获取文字的存放容器
+        var listBox = document.getElementById('list-box');
+        //存储定时器的变量
+        var timer = null;
+        //当用户在文本框中输入的时候触发
+        searchInp.oninput = function () {
+            //清除上一次开启的定时器
+            clearTimeout(timer);
+           //获取用户输入的内容
+           var key = this.value;
+           //如果用户没有在搜索框输入内容
+           if (key.trim().length == 0) {
+            //将提示下拉框隐藏掉
+            listBox.style.display = 'none';
+            //阻止程序向下执行
+            return;
+           }
+           //开启定时器 让请求延迟发送
+           timer = setTimeout(() => {
+            ajax({
+               type: 'get',
+               url: 'http://localhost:3000/searchAutoPrompt',
+               data: {
+                   key: key
+               },
+               success: function (result) {
+                   //使用模板引擎拼接字符串
+                var html = template('tpl', {result: result});
+                   //将拼接好的字符串显示在页面中
+                listBox.innerHTML = html;
+                //显示ul容器
+                listBox.style.display = 'block';
+               }
+           })
+           }, 800);
+           //向服务器端发送请求
+           //向服务端索取和用户输入关键字相关的内容
+           
+        }
+    </script>
+</body>
+</html>
