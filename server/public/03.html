@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        <input type="text" id="username">
+    </p>
+    <p>
+        <input type="text" id="age">
+    </p>
+    <p>
+        <input type="button" value="提交" id="btn">
+    </p>
+    <script>
+        var btn = document.getElementById('btn');
+
+        var username = document.getElementById('username');
+
+        var age = document.getElementById('age');
+        
+        btn.onclick = function () {
+            var xhr = new XMLHttpRequest();
+
+            var nameValue = username.value;
+            var ageValue = age.value;
+
+            // username=123&age=12
+            //拼接请求参数
+            var params = 'username=' + nameValue + '&age=' + ageValue;
+
+            // alert(nameValue);
+            // alert(ageValue);
+
+            xhr.open('get','http://localhost:3000/get?'+params);
+            xhr.send();
+            //获取服务器端响应的数据
+            xhr.onload = function(){
+                console.log(xhr.responseText);
+            }
+        }
+    </script>
+</body>
+</html>
