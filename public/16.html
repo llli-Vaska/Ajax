@@ -1,0 +1,67 @@
+<!-- formdata二进制文件上传以及文件上传进度展示 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .container {
+            padding-top: 150px;
+        }
+        /* .padding {
+            padding: 5px 0 20px 0;
+        } */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label>请选择文件</label>
+            <input type="file" id="file">
+            <br/>
+            <div class="progress">
+                <div class="progress-bar" style="width: 0%; color: blue;" id="bar">0%</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //获取文件选择控件
+        var flie = document.getElementById('file');
+        //获取进度条元素
+        var bar = document.getElementById('bar');
+        //为文件选择控件添加onchange事件
+        //在用户选择文件时触发
+        file.onchange = function () {
+            var formData = new FormData();
+            //将用户选择的文件追加到formdata表单对象中
+            formData.append('attrName', this.files[0]);
+            var xhr = new XMLHttpRequest();
+            xhr.open('post','http://localhost:3000/upload');
+
+            //在文件上传的过程中持续触发
+            xhr.upload.onprogress = function (ev) {
+                console.log(ev);
+                //ev.loaded 文件已经上传了多少
+                //ev.total 文件信息大小
+                var result = (ev.loaded / ev.total) * 100 + '%';
+                //设置进度条的宽度
+                bar.style.width = result;
+                //将百分比显示在进度条中
+                bar.innerHTML = result;
+
+            }
+            xhr.send(formData);
+            //监听服务端响应给客户端的数据
+            xhr.onload = function () {
+                if(xhr.status == 200) {
+                    //将服务器端返回的数据显示在控制台中
+                    console.log(xhr.responseText);
+                }
+            }
+            }
+        
+    </script>
+</body>
+</html>
