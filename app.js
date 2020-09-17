@@ -2,24 +2,14 @@ const express = require('express');
 
 const path = require('path');
 
-<<<<<<< HEAD
-
-const bodyParser = require('body-parser');
-=======
 const formidable = require('formidable');
 // const bodyParser = require('body-parser');  //15. =>去掉
->>>>>>> new
 const fs = require('fs');
 
 const app = express();
 
-<<<<<<< HEAD
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
-=======
 // app.use(bodyParser.urlencoded({extended:false}));   //15. =>去掉
 // app.use(bodyParser.json());  //15. =>去掉
->>>>>>> new
 
 app.use(express.static(path.join(__dirname,'public')));
 
@@ -206,13 +196,6 @@ app.get('/areas', (req, res) => {
     // 响应
     res.send(areas[id] || []);
 });
-<<<<<<< HEAD
-
- const port = 3000;
-app.listen(port);
-
-console.log('服务器启动成功！' + port);
-=======
 app.post('/formData', (req, res) => {
     //创建formidable表单解析
     const form = new formidable.IncomingForm();
@@ -232,13 +215,32 @@ app.post('/upload', (req, res) => {
    form.keepExtensions = true;
    //解析客户端传递过来的formdata对象
    form.parse(req, (err, fields, files) => {
-       res.send('ok');
+       res.send(files.attrName.path.split('public')[1]);
    });
-})
+});
+
+//代表拦截所有的请求(解决跨域问题)
+// app.use((req, res, next) => {
+//     //1.允许哪些客户端访问我
+//     //* 代表允许所有的客户端访问我
+//     res.header('Access-Control-Allow-Oribin','*');
+//     //2.允许客户端使用哪些请求方法访问我
+//     res.header('Access-Control-Allow-Methods','get,posit');
+//     next();
+// })
+
+// app.get('/cross',(req,res) => {
+//     //1.允许哪些客户端访问我
+//     //* 代表允许所有的客户端访问我
+//     res.header('Access-Control-Allow-Oribin','*');
+//     //2.允许客户端使用哪些请求方法访问我
+//     res.header('Access-Control-Allow-Methods','get,posit');
+
+//     res.send('ok')
+// })
 
 //端口号
 const port = 3000;
 app.listen(port);
 
 console.log('服务器启动成功！' +'端口号为：' + port);
->>>>>>> new

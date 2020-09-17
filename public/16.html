@@ -20,6 +20,9 @@
         <div class="form-group">
             <label>请选择文件</label>
             <input type="file" id="file">
+            <div class="padding" id="box">
+                <!-- <img src="" class="img-rounded img-reaponsive"> -->
+            </div>
             <br/>
             <div class="progress">
                 <div class="progress-bar" style="width: 0%; color: blue;" id="bar">0%</div>
@@ -31,6 +34,8 @@
         var flie = document.getElementById('file');
         //获取进度条元素
         var bar = document.getElementById('bar');
+        //获取图片容器
+        var box = document.getElementById('box');
         //为文件选择控件添加onchange事件
         //在用户选择文件时触发
         file.onchange = function () {
@@ -45,7 +50,7 @@
                 console.log(ev);
                 //ev.loaded 文件已经上传了多少
                 //ev.total 文件信息大小
-                var result = (ev.loaded / ev.total) * 100 + '%';
+                var result = (ev.loaded / ev.total) * 1000 + '%';
                 //设置进度条的宽度
                 bar.style.width = result;
                 //将百分比显示在进度条中
@@ -57,7 +62,15 @@
             xhr.onload = function () {
                 if(xhr.status == 200) {
                     //将服务器端返回的数据显示在控制台中
-                    console.log(xhr.responseText);
+                    var result = JSON.parse(xhr.responseText);
+                    //动态创建img表单
+                    var img = document.createElement('img');
+                    // 给图片标签设置src属性
+                    img.src = result.path;
+                    img.onload = function () {
+                        //当图片加载完成以后，将图片显示在页面中
+                        box.appendChild(img);
+                    }
                 }
             }
             }
