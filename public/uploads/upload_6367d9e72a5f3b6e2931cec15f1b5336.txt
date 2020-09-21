@@ -1,5 +1,0 @@
-create table 表名 （
-属性1 数据类型 列级完整性约束，
-属性2 数据类型 列级完整性约束，
-primary key (主键)，
-foreign key （属性2） references 表A（属性3））；
